@@ -54,24 +54,4 @@ abstract class Abs extends Model
     {
         return $this->setCreateTimeAttr($value);
     }
-
-    /**
-     * 字段属性处理
-     * @param mixed $value
-     * @return string
-     */
-    public function setExtraAttr($value): string
-    {
-        return is_string($value) ? $value : json_encode($value, JSON_UNESCAPED_UNICODE);
-    }
-
-    /**
-     * 字段属性处理
-     * @param mixed $value
-     * @return array
-     */
-    public function getExtraAttr($value): array
-    {
-        return empty($value) ? [] : (is_string($value) ? json_decode($value, true) : $value);
-    }
 }

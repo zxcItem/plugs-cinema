@@ -3,10 +3,10 @@
 {block name="button"}
 
 <!--{if auth("add")}-->
-<button data-modal='{:url("add")}' class='layui-btn layui-btn-sm layui-btn-primary'>添加资源采集</button>
+<button data-modal='{:url("add")}' class='layui-btn layui-btn-sm layui-btn-primary'>添加专辑</button>
 <!--{/if}-->
 <!--{if auth("remove")}-->
-<a data-confirm="确定永久删除数据吗？" data-table-id="ResourceTable" data-action='{:url("remove")}' data-rule="id#{id}" class='layui-btn layui-btn-sm layui-btn-primary'>批量删除</a>
+<a data-confirm="确定永久删除数据吗？" data-table-id="AlbumTable" data-action='{:url("remove")}' data-rule="id#{id}" class='layui-btn layui-btn-sm layui-btn-primary'>批量删除</a>
 <!--{/if}-->
 
 {/block}
@@ -14,7 +14,7 @@
 {block name="content"}
 <div class="layui-tab layui-tab-card">
     <div class="layui-tab-content">
-        <table id="ResourceTable" data-url="{:request()->url()}"></table>
+        <table id="AlbumTable" data-url="{:request()->url()}"></table>
     </div>
 </div>
 {/block}
@@ -22,14 +22,23 @@
 {block name='script'}
 <script>
     $(function () {
-        $('#ResourceTable').layTable({
+        $('#AlbumTable').layTable({
             even: true, height: 'full',
-            sort: {field: 'create_time', type: 'desc'},
+            sort: {field: 'sort', type: 'desc'},
             cols: [[
                 {checkbox: true, fixed: true},
-                {field: 'name', title: '资源名称',  align: 'center',minWidth: 100},
-                {field: 'address', title: '资源地址',  align: 'center',minWidth: 100},
-                {field: 'status', title: '资源状态', align: 'center', minWidth: 110, templet: '#StatusSwitchTpl'},
+                {
+                    field: 'cover', title: '{:lang("头像")}', width: 60, align: 'center', templet: function (d) {
+                        return laytpl('<div>{{-showTableImage(d.cover,false,"xs")}}</div>').render(d)
+                    }
+                },
+                {field: 'name', title: '专辑标题',  align: 'center',minWidth: 100},
+                {field: 'name', title: '视频数量',  align: 'center',minWidth: 100},
+                {field: 'view', title: '人气',  align: 'center',minWidth: 100},
+                {field: 'recommend', title: '推荐',  align: 'center',minWidth: 100,templet: function(d){
+                        return d.recommend ? '<i class="layui-icon layui-icon-rate-solid color-red"></i>' : '<i class="layui-icon layui-icon-rate"></i>';
+                    }},
+                {field: 'status', title: '数据状态', align: 'center', minWidth: 110, templet: '#StatusSwitchTpl'},
                 {field: 'create_time', title: '创建时间', align: 'center', minWidth: 170, sort: true},
                 {toolbar: '#toolbar', title: '操作面板', align: 'center', minWidth: 150, fixed: 'right'}
             ]]
@@ -40,8 +49,8 @@
             var data = {id: obj.value, status: obj.elem.checked > 0 ? 1 : 0};
             $.form.load("{:url('state')}", data, 'post', function (ret) {
                 if (ret.code < 1) $.msg.error(ret.info, 3, function () {
-                    $('#ResourceTable').trigger('reload');
-                }); else $('#ResourceTable').trigger('reload')
+                    $('#AlbumTable').trigger('reload');
+                }); else $('#AlbumTable').trigger('reload')
                 return false;
             }, false);
         });

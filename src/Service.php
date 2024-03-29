@@ -36,7 +36,15 @@ class Service extends Plugin
         $code = app(static::class)->appCode;
         // 设置插件菜单
         return [
-
+            [
+                'name' => '影院管理',
+                'subs' => [
+                    ['name' => '资源采集管理', 'icon' => 'layui-icon layui-icon-chart', 'node' => "{$code}/resource/index"],
+                    ['name' => '视频分类管理', 'icon' => 'layui-icon layui-icon-chart', 'node' => "{$code}/type/index"],
+                    ['name' => '视频资源管理', 'icon' => 'layui-icon layui-icon-chart', 'node' => "{$code}/video/index"],
+                    ['name' => '视频专辑管理', 'icon' => 'layui-icon layui-icon-chart', 'node' => "{$code}/album/index"],
+                ],
+            ],
         ];
     }
 }

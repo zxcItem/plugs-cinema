@@ -3,11 +3,13 @@
 namespace plugin\cinema\controller;
 
 use plugin\cinema\model\CinemaResource;
+use plugin\cinema\service\ResourceService;
 use think\admin\Controller;
 use think\admin\helper\QueryHelper;
 use think\db\exception\DataNotFoundException;
 use think\db\exception\DbException;
 use think\db\exception\ModelNotFoundException;
+use think\exception\HttpResponseException;
 
 /**
  * 资源采集
@@ -69,5 +71,18 @@ class Resource extends Controller
     public function remove()
     {
         CinemaResource::mDelete();
+    }
+
+    public function check()
+    {
+        try {
+            $data = json_decode(http_get(input('address')),true);
+            if ($data['code'] !== 1) $this->error('连接失败！','',2);
+            $this->success('连接成功',$data,1);
+        } catch (HttpResponseException $exception) {
+            throw $exception;
+        } catch (\Exception $exception) {
+            $this->error("连接失败：{$exception->getMessage()}",'',2);
+        }
     }
 }

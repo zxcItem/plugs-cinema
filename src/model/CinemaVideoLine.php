@@ -3,7 +3,7 @@
 namespace plugin\cinema\model;
 
 /**
- * 视频线路分类模型
+ * 播放线路模型
  */
 class CinemaVideoLine extends Abs
 {
