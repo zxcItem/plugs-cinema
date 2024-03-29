@@ -31,7 +31,7 @@
                 {field: 'address', title: '资源地址',  align: 'center',minWidth: 100},
                 {field: 'status', title: '资源状态', align: 'center', minWidth: 110, templet: '#StatusSwitchTpl'},
                 {field: 'create_time', title: '创建时间', align: 'center', minWidth: 170, sort: true},
-                {toolbar: '#toolbar', title: '操作面板', align: 'center', minWidth: 150, fixed: 'right'}
+                {toolbar: '#toolbar', title: '操作面板', align: 'center', minWidth: 200, fixed: 'right'}
             ]]
         });
 
@@ -57,6 +57,9 @@
 </script>
 
 <script type="text/html" id="toolbar">
+    <!--{if auth("gather/index")} -->
+    <a class="layui-btn layui-btn-sm" data-open='{:url("gather/index")}?resource_id={{d.id}}'>绑 定</a>
+    <!--{/if}-->
     <!--{if auth("edit")} -->
     <a class="layui-btn layui-btn-sm" data-modal='{:url("edit")}?id={{d.id}}'>编 辑</a>
     <!--{/if}-->

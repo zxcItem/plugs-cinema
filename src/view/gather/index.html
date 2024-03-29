@@ -1,0 +1,85 @@
+{extend name='table'}
+
+{block name="button"}
+
+{/block}
+
+{block name="content"}
+<div class="layui-tab layui-tab-card">
+
+    <div class="layui-tab-content">
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-xs9">
+                <div class="layui-form-item layui-inline">
+                    <!--{if auth("batch")}-->
+                    <a data-table-id="GatherTable" data-action='{:url("batch")}' data-rule="vod_id#{vod_id}" class='layui-btn layui-btn-sm layui-btn-primary'>采集选中</a>
+                    <!--{/if}-->
+                    <!--{if auth("batch")}-->
+                    <a data-table-id="GatherTable" data-action='{:url("batch")}' data-rule="vod_id#{vod_id}" class='layui-btn layui-btn-sm layui-btn-primary'>采集当天</a>
+                    <!--{/if}-->
+                    <!--{if auth("batch")}-->
+                    <a data-table-id="GatherTable" data-action='{:url("batch")}' data-rule="vod_id#{vod_id}" class='layui-btn layui-btn-sm layui-btn-primary'>采集本周</a>
+                    <!--{/if}-->
+                    <!--{if auth("batch")}-->
+                    <a data-table-id="GatherTable" data-action='{:url("batch")}' data-rule="vod_id#{vod_id}" class='layui-btn layui-btn-sm layui-btn-primary'>采集所有</a>
+                    <!--{/if}-->
+                </div>
+                <table id="GatherTable" data-url="{:request()->url()}"></table>
+            </div>
+            <div class="layui-col-xs3 padding-top-20">
+                <span class="color-red">采集资源之前必须先绑定分类，一级分类不需要绑定，请忽略!</span>
+                <div class="layui-form-item"   style="overflow-x: auto;overflow-y: auto; height:600px">
+                    <table class="layui-table layuiadmin-page-table">
+                        <tbody>
+                        {foreach $types as $v}
+                        <tr class="layui-col-xs6">
+                            <td class="layui-col-xs6">{$v.type_name}</td>
+                            {if $v.resource_type_name}
+                            <td class="layui-col-xs6">
+                                <a data-confirm="确定解绑分类数据吗？" data-action='{:url("unbind")}?resource_id={$v.resource_id}&resource_type_id={$v.type_id}'>{$v.resource_type_name}</a>
+                            </td>
+                            {else /}
+                            <td class="layui-col-xs6">
+                                <a class="color-red" data-modal='{:url("bind")}?resource_id={$v.resource_id}&resource_type_id={$v.type_id}&resource_type_name={$v.type_name}'>未绑定</a>
+                            </td>
+                            {/if}
+                        </tr>
+                        {/foreach}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+
+
+    </div>
+</div>
+{/block}
+
+{block name='script'}
+<script>
+    $(function () {
+        $('#GatherTable').layTable({
+            even: true, height: 'full',url: "{:sysuri('')}",
+            where: {output: 'layui.table',resource_id:"{$get.resource_id|default=''}"},
+            cols: [[
+                {checkbox: true, fixed: true},
+                {field: 'vod_id', title: '资源ID', width: 80, align: 'center'},
+                {field: 'type_name', title: '资源分类', width: 100},
+                {field: 'vod_name', title: '资源名称', minWidth: 200},
+                {field: 'vod_remarks', title: '连载状态', width: 150},
+                {field: 'vod_play_from', title: '来源', width: 150},
+                {field: 'vod_time', title: '更新时间', width: 200, align: 'center'}
+            ]]
+        });
+    });
+</script>
+
+<script type="text/html" id="ToolbarGatherTable">
+
+
+
+</script>
+{/block}

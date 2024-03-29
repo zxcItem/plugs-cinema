@@ -73,6 +73,10 @@ class Resource extends Controller
         CinemaResource::mDelete();
     }
 
+    /**
+     * 检测资源路径
+     * @return void
+     */
     public function check()
     {
         try {

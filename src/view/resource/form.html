@@ -18,7 +18,7 @@
                 <label class="layui-form-label color-green">资源类型</label>
                 <div class="layui-input-block">
                     <div class="layui-input">
-                        {foreach [1 => 'JSON', 2 => 'XML'] as $k => $v}
+                        {foreach ['json' => 'JSON', 'xml' => 'XML'] as $k => $v}
                         <label class="think-radio notselect">
                             <input v-model.number="type" type="radio" value="{$k}" name="type" lay-ignore> {$v}
                         </label>
@@ -69,7 +69,7 @@
         var app = new vue({
             el: '#RuleForm',
             data: {
-                type: parseInt('{$vo.type|default=1}'),
+                type: "{$vo.type|default='json'}",
                 parse_mod: parseInt('{$vo.parse_mod|default=0}'),
             },
         });
