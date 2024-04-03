@@ -27,8 +27,13 @@ class Gather extends Controller
     public  function index()
     {
         $this->title = '资源采集管理';
-        $data = ResourceService::getData(input('resource_id'),['pg'=>input('page')]);
-        $this->types = ResourceService::typeHandle(input('resource_id'),$data['class']);
+        $this->resource_id = input('resource_id');
+        $data = ResourceService::getData($this->resource_id,[
+            'pg' => input('page','1'),
+            't'  => intval(input('t','')),
+            'wd' => intval(input('wd','')),
+        ]);
+        if($data['class']) $this->types = ResourceService::typeHandle($this->resource_id,$data['class']);
         if (input('output')) return json(['code'=>0,'count'=>$data['total'],'data'=>$data['list']]);
         $this->fetch();
     }
@@ -39,7 +44,20 @@ class Gather extends Controller
      */
     public function batch()
     {
+        $map = $this->_vali(['resource_id.require'=>'资源ID不可为空','vod_ids.require'=>'请勾选需要采集的数据']);
+        $this->_queue('批量资源ID采集数据任务操作', 'cinema:batch',0,$map);
+    }
 
+    /**
+     * 批量绑定
+     * @auth true
+     */
+    public function batchBind()
+    {
+        $map = $this->_vali(['resource_id.require'=>'资源ID不可为空']);
+        $data = ResourceService::getData($map['resource_id']);
+        ResourceService::bindType($map['resource_id'],$data['class']);
+        $this->success('绑定成功');
     }
 
     /**

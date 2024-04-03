@@ -25,8 +25,6 @@ class CinemaTheme extends Abs
      */
     public static function themeName($string)
     {
-
         return $string ? self::mk()->whereIn('id',$string)->column('name') : '';
-
     }
 }

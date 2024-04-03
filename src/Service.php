@@ -4,6 +4,7 @@ declare (strict_types=1);
 
 namespace plugin\cinema;
 
+use plugin\cinema\command\Batch;
 use think\admin\Plugin;
 
 /**
@@ -25,6 +26,14 @@ class Service extends Plugin
      */
     protected $package = 'xiaochao/plugs-cinema';
 
+    /**
+     * 插件服务注册
+     * @return void
+     */
+    public function register(): void
+    {
+        $this->commands([Batch::class]);
+    }
 
     /**
      * 影院系统菜单配置

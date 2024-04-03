@@ -80,7 +80,8 @@ class Resource extends Controller
     public function check()
     {
         try {
-            $data = json_decode(http_get(input('address')),true);
+            $headers['headers'] = ["Content-Type: text/html;charset=utf-8"];
+            $data = json_decode(http_get(input('address'),[],$headers),true);
             if ($data['code'] !== 1) $this->error('连接失败！','',2);
             $this->success('连接成功',$data,1);
         } catch (HttpResponseException $exception) {

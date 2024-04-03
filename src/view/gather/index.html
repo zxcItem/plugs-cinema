@@ -10,24 +10,53 @@
     <div class="layui-tab-content">
         <div class="layui-row layui-col-space15">
             <div class="layui-col-xs9">
-                <div class="layui-form-item layui-inline">
-                    <!--{if auth("batch")}-->
-                    <a data-table-id="GatherTable" data-action='{:url("batch")}' data-rule="vod_id#{vod_id}" class='layui-btn layui-btn-sm layui-btn-primary'>采集选中</a>
-                    <!--{/if}-->
-                    <!--{if auth("batch")}-->
-                    <a data-table-id="GatherTable" data-action='{:url("batch")}' data-rule="vod_id#{vod_id}" class='layui-btn layui-btn-sm layui-btn-primary'>采集当天</a>
-                    <!--{/if}-->
-                    <!--{if auth("batch")}-->
-                    <a data-table-id="GatherTable" data-action='{:url("batch")}' data-rule="vod_id#{vod_id}" class='layui-btn layui-btn-sm layui-btn-primary'>采集本周</a>
-                    <!--{/if}-->
-                    <!--{if auth("batch")}-->
-                    <a data-table-id="GatherTable" data-action='{:url("batch")}' data-rule="vod_id#{vod_id}" class='layui-btn layui-btn-sm layui-btn-primary'>采集所有</a>
-                    <!--{/if}-->
-                </div>
+                <form action="{:sysuri()}" autocomplete="off" class="layui-form layui-form-pane form-search" method="get" onsubmit="return false">
+                    <div class="layui-form-item layui-inline layui-hide">
+                        <label class="layui-form-label">资源ID</label>
+                        <label class="layui-input-inline">
+                            <input class="layui-input" name="resource_id" value="{$get.resource_id|default=''}">
+                        </label>
+                    </div>
+                    <div class="layui-form-item layui-inline">
+                        <label class="layui-form-label">资源名称</label>
+                        <label class="layui-input-inline">
+                            <input class="layui-input" name="wd" value="{$get.wd|default=''}">
+                        </label>
+                    </div>
+                    <div class="layui-form-item layui-inline">
+                        <label class="layui-form-label">资源分类</label>
+                        <div class="layui-input-inline">
+                            <select class="layui-select" lay-search name="t">
+                                <option value="">---------选择分类---------</option>
+                                {foreach $types as &$type} {if isset($get.t) and $get.t eq $type.type_id}
+                                <option selected value="{$type.type_id}">{$type.type_name}</option>
+                                {else}
+                                <option value="{$type.type_id}">{$type.type_name}</option>
+                                {/if}{/foreach}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui-inline">
+                        <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
+                        <!--{if auth("batch")}-->
+                        <button data-table-id="GatherTable" data-queue='{:url("batch")}?resource_id={$resource_id}' data-rule="vod_ids#{vod_id}" class='layui-btn layui-btn-sm layui-btn-primary'>采集选中</button>
+                        <!--{/if}-->
+                        <!--{if auth("batch")}-->
+                        <button data-table-id="GatherTable" data-queue='{:url("batch")}?resource_id={$resource_id}' data-rule="vod_ids#{vod_id}" class='layui-btn layui-btn-sm layui-btn-primary'>采集选中</button>
+                        <!--{/if}-->
+                        <!--{if auth("batch")}-->
+                        <button data-table-id="GatherTable" data-queue='{:url("batch")}?resource_id={$resource_id}' data-rule="vod_ids#{vod_id}" class='layui-btn layui-btn-sm layui-btn-primary'>采集选中</button>
+                        <!--{/if}-->
+                    </div>
+                </form>
                 <table id="GatherTable" data-url="{:request()->url()}"></table>
             </div>
-            <div class="layui-col-xs3 padding-top-20">
-                <span class="color-red">采集资源之前必须先绑定分类，一级分类不需要绑定，请忽略!</span>
+            <div class="layui-col-xs3">
+                <!--{if auth("batchBind")}-->
+                <div  class="layui-form-item layui-inline pull-right">
+                    <button data-action='{:url("batchBind")}?resource_id={$resource_id}' class='layui-btn layui-btn-sm layui-btn-primary'>一键绑定</button>
+                </div>
+                <!--{/if}-->
                 <div class="layui-form-item"   style="overflow-x: auto;overflow-y: auto; height:600px">
                     <table class="layui-table layuiadmin-page-table">
                         <tbody>
@@ -63,7 +92,12 @@
     $(function () {
         $('#GatherTable').layTable({
             even: true, height: 'full',url: "{:sysuri('')}",
-            where: {output: 'layui.table',resource_id:"{$get.resource_id|default=''}"},
+            where: {
+                output: 'layui.table',
+                resource_id: "{$get.resource_id|default=''}",
+                wd: "{$get.wd|default=''}",
+                t: "{$get.t|default=''}"
+            },
             cols: [[
                 {checkbox: true, fixed: true},
                 {field: 'vod_id', title: '资源ID', width: 80, align: 'center'},

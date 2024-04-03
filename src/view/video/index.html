@@ -57,9 +57,15 @@
                         return laytpl(tpls.join('<br>')).render(d);
                     }
                 },
-                {field: 'status', title: '状态', align: 'center', minWidth: 110, templet: '#StatusSwitchTpl'},
-                {field: 'create_time', title: '创建时间', align: 'center', minWidth: 170, sort: true},
-                {toolbar: '#toolbar', title: '操作面板', align: 'center', minWidth: 150, fixed: 'right'}
+                {field: 'status', title: '状态', align: 'center', width: 110, templet: '#StatusSwitchTpl'},
+                {field: 'update_time', title: '更新时间', align: 'center', minWidth: 200, sort: true, templet: function (d) {
+                        let tpls = [];
+                        tpls.push('创建时间：{{d.create_time||"-"}}')
+                        tpls.push('更新时间：{{d.update_time||"-"}}')
+                        return laytpl(tpls.join('<br>')).render(d);
+                    }
+                },
+                {toolbar: '#toolbar', title: '操作面板', align: 'center', width: 150, fixed: 'right'}
             ]]
         });
 
