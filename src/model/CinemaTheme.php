@@ -12,8 +12,15 @@ class CinemaTheme extends Abs
     {
         if ($string){
             $string = explode(',', $string);
-            foreach($string as &$value) $data[] = self::mk()->insertGetId(['type_id'=>$type_id,'name'=>$value]);
-            return implode(',',$data);
+            foreach($string as &$value) {
+                $names = self::mk()->column('type_id,id','name');
+                if (!empty($names[$value]) && $names[$value]['id']){
+                    $id[] = $names[$value]['id'];
+                }else{
+                    $id[] = self::mk()->insertGetId(['type_id' => $type_id, 'name' => $value]);
+                }
+            }
+            return implode(',',$id);
         }
         return '';
     }

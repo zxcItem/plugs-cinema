@@ -33,7 +33,7 @@ class Gather extends Controller
             't'  => intval(input('t','')),
             'wd' => intval(input('wd','')),
         ]);
-        if($data['class']) $this->types = ResourceService::typeHandle($this->resource_id,$data['class']);
+        if(!empty($data['class'])) $this->types = ResourceService::typeHandle($this->resource_id,$data['class']);
         if (input('output')) return json(['code'=>0,'count'=>$data['total'],'data'=>$data['list']]);
         $this->fetch();
     }

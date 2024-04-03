@@ -24,9 +24,10 @@
     $(function () {
         $('#VideoTable').layTable({
             even: true, height: 'full',
-            sort: {field: 'create_time', type: 'desc'},
+            sort: {field: 'sort', type: 'desc'},
             cols: [[
                 {checkbox: true, fixed: true},
+                {field: 'sort', title: '排序权重', width: 100, align: 'center', sort: true, templet: '#SortInputTpl'},
                 {
                     field: 'cover', title: '封 面', width: 85, align: 'center', templet: function (d) {
                         return laytpl('<div>{{-showTableImage(d.cover,false,"sm")}}</div>').render(d)
@@ -65,7 +66,7 @@
                         return laytpl(tpls.join('<br>')).render(d);
                     }
                 },
-                {toolbar: '#toolbar', title: '操作面板', align: 'center', width: 150, fixed: 'right'}
+                {toolbar: '#toolbar', title: '操作面板', align: 'center', width: 200, fixed: 'right'}
             ]]
         });
 
@@ -89,8 +90,14 @@
     {{d.status ? '<b class="color-green">已启用</b>' : '<b class="color-red">已禁用</b>'}}
     <!--{/if}-->
 </script>
-
+<!-- 列表排序权重模板 -->
+<script type="text/html" id="SortInputTpl">
+    <input type="number" min="0" data-blur-number="0" data-action-blur="{:sysuri()}" data-value="id#{{d.id}};action#sort;sort#{value}" data-loading="false" value="{{d.sort}}" class="layui-input text-center">
+</script>
 <script type="text/html" id="toolbar">
+    <!--{if auth("play/index")}-->
+    <button class='layui-btn layui-btn-sm layui-btn-primary' data-modal ='{:url("play/index")}?video_id={{d.id}}' data-title="剧集管理" data-width="920px">剧 集</button>
+    <!--{/if}-->
     <!--{if auth("edit")} -->
     <a class="layui-btn layui-btn-sm" data-modal='{:url("edit")}?id={{d.id}}'>编 辑</a>
     <!--{/if}-->

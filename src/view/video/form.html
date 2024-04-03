@@ -64,6 +64,13 @@
                     <input name="directors" value="{$vo.directors|default=''}" class="layui-input">
                 </div>
             </div>
+            <div class="layui-col-xs6">
+                <label class="layui-form-label color-green">测试</label>
+                <div class="layui-input-block">
+                    <div name="theme" id="demo1" class="xm-select-demo"></div>
+                </div>
+            </div>
+
 
             <div class="layui-col-xs6">
                 <div class="layui-form-item">
@@ -125,5 +132,10 @@
 </form>
 
 <script>
-
+    require(['xmSelect'], function () {
+        var demo1 = xmSelect.render({
+            el: '#demo1',
+            data: JSON.parse($themes)
+        })
+    })
 </script>

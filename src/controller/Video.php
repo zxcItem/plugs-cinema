@@ -74,6 +74,7 @@ class Video extends Controller
             $this->cates = CinemaType::items(true);
             $data['cates'] = $data['cates'] ?? [];
             $this->regions = CinemaRegion::item();
+            $this->themes = CinemaTheme::mk()->field('id as value,name')->select()->toarray();
         }
     }
 

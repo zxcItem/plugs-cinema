@@ -123,7 +123,13 @@ class ResourceService extends Service
                 foreach($item['url'] as &$vo){
                     if($vo){
                         $video = explode("$", $vo);
-                        CinemaVideoPlay::mk()->insert(['line_id'=>$line_id,'video_id'=>$video_id,'name'=>$video[0],'url'=>$video[1]]);
+                        CinemaVideoPlay::mk()->save([
+                            'line_id'  => $line_id,
+                            'video_id' => $video_id,
+                            'name'     => $video[0],
+                            'url'      => $video[1],
+                            'line_name'=> $item['name']
+                        ]);
                     }
                 }
             }
@@ -152,7 +158,14 @@ class ResourceService extends Service
                 foreach($item['url'] as &$vo){
                     if($vo){
                         $video = explode("$", $vo);
-                        CinemaVideoPlay::mk()->insert(['line_id'=>$line_id,'video_id'=>$video_id,'type'=>1,'name'=>$video[0],'url'=>$video[1]]);
+                        CinemaVideoPlay::mk()->save([
+                            'line_id'  => $line_id,
+                            'video_id' => $video_id,
+                            'type'     => 1,
+                            'name'     => $video[0],
+                            'url'      => $video[1],
+                            'line_name'=> $item['name']
+                        ]);
                     }
                 }
             }
