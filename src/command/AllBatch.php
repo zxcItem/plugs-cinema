@@ -60,7 +60,7 @@ class AllBatch extends Command
                 ResourceService::saveVideoPlay($video_id,$model['vod_play_from'],$model['vod_play_url']);
                 ResourceService::saveVideoDown($video_id,$model['vod_down_from'],$model['vod_down_url']);
             });
-            $this->app->cache->set("page-{$resource_id}",$page+1,120);
+            $this->app->cache->set("page-{$resource_id}",$page+1,3600);
         } catch (\Exception $exception) {
             $error++;
             $this->queue->message($total, $count, sprintf('采集【%s 】资源失败, %s', $model['vod_name'], $exception->getMessage()), 1);
