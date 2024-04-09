@@ -70,16 +70,17 @@ class ResourceService extends Service
 
     /**
      * 获取新增数据ID
+     * @param int $resource_id
      * @param array $model
      * @param int $type
      * @param int $region_id
      * @param string $theme
      * @return int|string
      */
-    public static function getVideoId(array $model,int $type, int $region_id,string $theme)
+    public static function getVideoId(int $resource_id,array $model,int $type, int $region_id,string $theme)
     {
         return CinemaVideo::mk()->insertGetId([
-            'resource_id'  => 1,
+            'resource_id'  => $resource_id,
             'vod_id'       => $model['vod_id'],
             'title'        => $model['vod_name'],
             'cover'        => $model['vod_pic'],

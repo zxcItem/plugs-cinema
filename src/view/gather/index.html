@@ -44,11 +44,11 @@
                         <!--{if auth("batch")}-->
                         <button data-table-id="GatherTable" data-queue='{:url("batch")}?resource_id={$resource_id}' data-rule="vod_ids#{vod_id}" class='layui-btn layui-btn-sm layui-btn-primary'>采集选中</button>
                         <!--{/if}-->
-                        <!--{if auth("batch")}-->
-                        <button data-table-id="GatherTable" data-queue='{:url("batch")}?resource_id={$resource_id}' data-rule="vod_ids#{vod_id}" class='layui-btn layui-btn-sm layui-btn-primary'>采集选中</button>
+                        <!--{if auth("today")}-->
+                        <button data-table-id="GatherTable" data-queue='{:url("today")}?resource_id={$resource_id}' class='layui-btn layui-btn-sm layui-btn-primary'>采集今日</button>
                         <!--{/if}-->
-                        <!--{if auth("batch")}-->
-                        <button data-table-id="GatherTable" data-queue='{:url("batch")}?resource_id={$resource_id}' data-rule="vod_ids#{vod_id}" class='layui-btn layui-btn-sm layui-btn-primary'>采集选中</button>
+                        <!--{if auth("all")}-->
+                        <button data-table-id="GatherTable" data-queue='{:url("all")}?resource_id={$resource_id}' class='layui-btn layui-btn-sm layui-btn-primary'>采集所有</button>
                         <!--{/if}-->
                     </div>
                 </form>

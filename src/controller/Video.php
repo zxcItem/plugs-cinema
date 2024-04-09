@@ -30,10 +30,11 @@ class Video extends Controller
     {
         CinemaVideo::mQuery()->layTable(function () {
             $this->title = '视频资源管理';
+            $this->types = CinemaType::items();
         }, static function (QueryHelper $query) {
             $query->with(['region','type'=>function($type){
                 $type->with(['type']);
-            }])->like('title')->dateBetween('create_time');
+            }])->like('title')->equal('type_id')->dateBetween('create_time');
         });
     }
 
@@ -74,7 +75,7 @@ class Video extends Controller
             $this->cates = CinemaType::items(true);
             $data['cates'] = $data['cates'] ?? [];
             $this->regions = CinemaRegion::item();
-            $this->themes = CinemaTheme::mk()->field('id as value,name')->select()->toarray();
+            $this->themes = CinemaTheme::xSelect($data['theme']);
         }
     }
 

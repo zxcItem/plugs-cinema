@@ -14,6 +14,7 @@
 {block name="content"}
 <div class="layui-tab layui-tab-card">
     <div class="layui-tab-content">
+        {include file='video/index_search'}
         <table id="VideoTable" data-line="2" data-url="{:request()->url()}"></table>
     </div>
 </div>
@@ -42,7 +43,7 @@
                     }
                 },
                 {
-                    title: '时间信息', minWidth: 120, templet: function (d) {
+                    title: '时间信息', minWidth: 100, templet: function (d) {
                         let tpls = [];
                         tpls.push('视频年份：{{d.year||"-"}}')
                         tpls.push('上映时间：{{d.release_time||"-"}}')
@@ -59,7 +60,7 @@
                     }
                 },
                 {field: 'status', title: '状态', align: 'center', width: 110, templet: '#StatusSwitchTpl'},
-                {field: 'update_time', title: '更新时间', align: 'center', minWidth: 200, sort: true, templet: function (d) {
+                {field: 'update_time', title: '更新时间', align: 'center', minWidth: 250, sort: true, templet: function (d) {
                         let tpls = [];
                         tpls.push('创建时间：{{d.create_time||"-"}}')
                         tpls.push('更新时间：{{d.update_time||"-"}}')

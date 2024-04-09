@@ -2,6 +2,11 @@
 
 namespace plugin\cinema\model;
 
+use think\Collection;
+use think\db\exception\DataNotFoundException;
+use think\db\exception\DbException;
+use think\db\exception\ModelNotFoundException;
+
 /**
  * 视频题材模型
  */
@@ -33,5 +38,21 @@ class CinemaTheme extends Abs
     public static function themeName($string)
     {
         return $string ? self::mk()->whereIn('id',$string)->column('name') : '';
+    }
+
+    /**
+     * 多选数据
+     * @param $string
+     * @return array|CinemaTheme[]|Collection
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
+     */
+    public static function xSelect($string)
+    {
+        $list = self::mk()->field('id as value,name')->select();
+        $arr = explode(",", $string);
+        foreach($list as &$item) $item['selected'] = in_array($item['value'], $arr);
+        return $list;
     }
 }

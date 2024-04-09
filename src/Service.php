@@ -4,6 +4,7 @@ declare (strict_types=1);
 
 namespace plugin\cinema;
 
+use plugin\cinema\command\AllBatch;
 use plugin\cinema\command\Batch;
 use think\admin\Plugin;
 
@@ -32,7 +33,7 @@ class Service extends Plugin
      */
     public function register(): void
     {
-        $this->commands([Batch::class]);
+        $this->commands([Batch::class,AllBatch::class]);
     }
 
     /**
