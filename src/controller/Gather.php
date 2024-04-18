@@ -65,7 +65,7 @@ class Gather extends Controller
     public function all()
     {
         $map = $this->_vali(['resource_id.require'=>'资源ID不可为空']);
-        $this->_queue("批量资源ID:{$map['resource_id']}的采集数据任务操作", 'cinema:allbatch',0,$map,0,60);
+        $this->_queue("批量资源ID:{$map['resource_id']}的采集数据任务操作", 'cinema:allbatch',0,$map,0,10);
     }
 
     /**

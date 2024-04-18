@@ -9,6 +9,9 @@ use plugin\cinema\model\CinemaVideo;
 use plugin\cinema\model\CinemaVideoLine;
 use plugin\cinema\model\CinemaVideoPlay;
 use think\admin\Service;
+use think\db\exception\DataNotFoundException;
+use think\db\exception\DbException;
+use think\db\exception\ModelNotFoundException;
 
 /**
  * 资源采集
@@ -76,9 +79,18 @@ class ResourceService extends Service
      * @param int $region_id
      * @param string $theme
      * @return int|string
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     public static function getVideoId(int $resource_id,array $model,int $type, int $region_id,string $theme)
     {
+        $video = CinemaVideo::mk()->where(['type_id'=>$type,'title'=>$model['vod_name']])->find();
+        if($video){
+            CinemaVideo::mk()->where(['type_id'=>$type,'title'=>$model['vod_name']])
+                ->update(['note'=>$model['vod_remarks'],'update_time'=>$model['vod_time']]);
+            return $video['id'];
+        }
         return CinemaVideo::mk()->insertGetId([
             'resource_id'  => $resource_id,
             'vod_id'       => $model['vod_id'],
@@ -98,7 +110,7 @@ class ResourceService extends Service
             'release_time' => $model['vod_pubdate'],
             'theme'        => $theme,
             'create_time'  => date('Y-m-d H:i:s'),
-            'update_time'  => date('Y-m-d H:i:s')
+            'update_time'  => $model['vod_time']
         ]);
     }
 

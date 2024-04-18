@@ -28,7 +28,7 @@ class Video extends Controller
      */
     public  function index()
     {
-        CinemaVideo::mQuery()->layTable(function () {
+        CinemaVideo::mQuery()->withoutField('remark,actors')->layTable(function () {
             $this->title = '视频资源管理';
             $this->types = CinemaType::items();
         }, static function (QueryHelper $query) {

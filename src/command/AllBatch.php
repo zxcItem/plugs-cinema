@@ -52,7 +52,7 @@ class AllBatch extends Command
         [$total, $count, $error] = [intval($resource['limit']), 0, 0];
         foreach ($resource['list'] as &$model) try {
             $this->queue->message($total, ++$count, sprintf('开始采集【 %s 】资源详情', $model['vod_name']));
-            if (!$type = $types[$model['type_id']]['type_id']) continue;
+            if (!$type = $types[$model['type_id']]['type_id'] ?? '') continue;
             $region_id = CinemaRegion::region($model['vod_area']);
             $theme = CinemaTheme::getIds($type,$model['vod_class']);
             $this->app->db->transaction(function () use ($model,$resource_id,$type,$region_id,$theme) {
@@ -60,11 +60,11 @@ class AllBatch extends Command
                 ResourceService::saveVideoPlay($video_id,$model['vod_play_from'],$model['vod_play_url']);
                 ResourceService::saveVideoDown($video_id,$model['vod_down_from'],$model['vod_down_url']);
             });
-            $this->app->cache->set("page-{$resource_id}",$page+1,3600);
         } catch (\Exception $exception) {
             $error++;
             $this->queue->message($total, $count, sprintf('采集【%s 】资源失败, %s', $model['vod_name'], $exception->getMessage()), 1);
         }
+        $this->app->cache->set("page-{$resource_id}",$page+1);
         $this->setQueueSuccess(sprintf('第 %d 页资源采集结束，此次共采集 %d 条资源详情, 其中有 %d 条采集失败。',$page, $total, $error));
     }
 }

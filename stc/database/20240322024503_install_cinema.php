@@ -339,8 +339,7 @@ class InstallCinema extends Migrator
             ->addColumn('sort', 'biginteger', ['limit' => 20, 'default' => 0, 'null' => true, 'comment' => '排序权重'])
             ->addColumn('create_time', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'null' => true, 'comment' => '创建时间'])
             ->addColumn('update_time', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'null' => true, 'comment' => '更新时间'])
-            ->addIndex('sort', ['name' => 'idx_cinema_video_play_sort'])
-            ->addIndex('status', ['name' => 'idx_cinema_video_play_status'])
+
             ->create();
 
         // 修改主键长度
