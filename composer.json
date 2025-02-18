@@ -1,0 +1,44 @@
+{
+    "type": "think-admin-plugin",
+    "name": "xiaochao/plugs-cinema",
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "叶落无痕",
+            "email": "1262847141@qq.com"
+        }
+    ],
+    "require": {
+        "php": ">7.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "plugin\\cinema\\": "src"
+        }
+    },
+    "extra": {
+        "config": {
+            "type": "module",
+            "name": "影视服务",
+            "cover": "layui-icon layui-icon-release",
+            "description": "影视服务 功能开发中"
+        },
+        "think": {
+            "services": [
+                "plugin\\cinema\\Service"
+            ]
+        },
+        "plugin": {
+            "copy": {
+                "stc/database": "database/migrations"
+            }
+        }
+    },
+    "minimum-stability": "dev",
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "zoujingli/think-install": true
+        }
+    }
+}

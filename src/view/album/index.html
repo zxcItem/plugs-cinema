@@ -1,0 +1,76 @@
+{extend name='table'}
+
+{block name="button"}
+
+<!--{if auth("add")}-->
+<button data-modal='{:url("add")}' class='layui-btn layui-btn-sm layui-btn-primary'>添加专辑</button>
+<!--{/if}-->
+<!--{if auth("remove")}-->
+<a data-confirm="确定永久删除数据吗？" data-table-id="AlbumTable" data-action='{:url("remove")}' data-rule="id#{id}" class='layui-btn layui-btn-sm layui-btn-primary'>批量删除</a>
+<!--{/if}-->
+
+{/block}
+
+{block name="content"}
+<div class="layui-tab layui-tab-card">
+    <div class="layui-tab-content">
+        <table id="AlbumTable" data-url="{:request()->url()}"></table>
+    </div>
+</div>
+{/block}
+
+{block name='script'}
+<script>
+    $(function () {
+        $('#AlbumTable').layTable({
+            even: true, height: 'full',
+            sort: {field: 'sort', type: 'desc'},
+            cols: [[
+                {checkbox: true, fixed: true},
+                {
+                    field: 'cover', title: '{:lang("头像")}', width: 60, align: 'center', templet: function (d) {
+                        return laytpl('<div>{{-showTableImage(d.cover,false,"xs")}}</div>').render(d)
+                    }
+                },
+                {field: 'name', title: '专辑标题',  align: 'center',minWidth: 100},
+                {field: 'name', title: '视频数量',  align: 'center',minWidth: 100},
+                {field: 'view', title: '人气',  align: 'center',minWidth: 100},
+                {field: 'recommend', title: '推荐',  align: 'center',minWidth: 100,templet: function(d){
+                        return d.recommend ? '<i class="layui-icon layui-icon-rate-solid color-red"></i>' : '<i class="layui-icon layui-icon-rate"></i>';
+                    }},
+                {field: 'status', title: '数据状态', align: 'center', minWidth: 110, templet: '#StatusSwitchTpl'},
+                {field: 'create_time', title: '创建时间', align: 'center', minWidth: 170, sort: true},
+                {toolbar: '#toolbar', title: '操作面板', align: 'center', minWidth: 150, fixed: 'right'}
+            ]]
+        });
+
+        // 数据状态切换操作
+        layui.form.on('switch(StatusSwitch)', function (obj) {
+            var data = {id: obj.value, status: obj.elem.checked > 0 ? 1 : 0};
+            $.form.load("{:url('state')}", data, 'post', function (ret) {
+                if (ret.code < 1) $.msg.error(ret.info, 3, function () {
+                    $('#AlbumTable').trigger('reload');
+                }); else $('#AlbumTable').trigger('reload')
+                return false;
+            }, false);
+        });
+    });
+</script>
+<!-- 数据状态切换模板 -->
+<script type="text/html" id="StatusSwitchTpl">
+    <!--{if auth("state")}-->
+    <input type="checkbox" value="{{d.id}}" lay-skin="switch" lay-text="已激活|已禁用" lay-filter="StatusSwitch" {{d.status>0?'checked':''}}>
+    <!--{else}-->
+    {{d.status ? '<b class="color-green">已启用</b>' : '<b class="color-red">已禁用</b>'}}
+    <!--{/if}-->
+</script>
+
+<script type="text/html" id="toolbar">
+    <!--{if auth("edit")} -->
+    <a class="layui-btn layui-btn-sm" data-modal='{:url("edit")}?id={{d.id}}'>编 辑</a>
+    <!--{/if}-->
+    <!--{if auth("remove")}-->
+    <a class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="确定要永久删除此数据吗？" data-action="{:url('remove')}" data-value="id#{{d.id}}">删 除</a>
+    <!--{/if}-->
+</script>
+{/block}
